@@ -15,7 +15,8 @@ setup(
     packages=find_packages(),
     install_requires=[
         "numpy",
-        "openai",
+        "fast-sentence-transformers",
+        "fast-sentence-transformers[gpu]",
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",
