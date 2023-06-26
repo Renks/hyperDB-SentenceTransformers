@@ -1,8 +1,9 @@
+# from sentence_transformers import SentenceTransformer
+from fast_sentence_transformers import FastSentenceTransformer as SentenceTransformer
 import gzip
 import pickle
 
 import numpy as np
-import openai
 
 from hyperdb.galaxy_brain_math_shit import (
     adams_similarity,
@@ -12,7 +13,7 @@ from hyperdb.galaxy_brain_math_shit import (
     hyper_SVM_ranking_algorithm_sort,
 )
 
-MAX_BATCH_SIZE = 2048  # OpenAI batch endpoint max size https://github.com/openai/openai-python/blob/main/openai/embeddings_utils.py#L43
+EMBEDDING_MODEL = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", device="gpu")
 
 
 def get_embedding(documents, key=None, model="text-embedding-ada-002"):
@@ -35,13 +36,8 @@ def get_embedding(documents, key=None, model="text-embedding-ada-002"):
                     texts.append(text)
         elif isinstance(documents[0], str):
             texts = documents
-    batches = [
-        texts[i : i + MAX_BATCH_SIZE] for i in range(0, len(texts), MAX_BATCH_SIZE)
-    ]
-    embeddings = []
-    for batch in batches:
-        response = openai.Embedding.create(input=batch, model=model)
-        embeddings.extend(np.array(item["embedding"]) for item in response["data"])
+
+    embeddings = EMBEDDING_MODEL.encode(texts)
     return embeddings
 
 
@@ -56,7 +52,7 @@ class HyperDB:
     ):
         documents = documents or []
         self.documents = []
-        self.vectors = []
+        self.vectors = None # update from "[]" to "None"
         self.embedding_function = embedding_function or (
             lambda docs: get_embedding(docs, key=key)
         )
