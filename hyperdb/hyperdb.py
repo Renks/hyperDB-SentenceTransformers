@@ -17,7 +17,7 @@ EMBEDDING_MODEL = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", 
 
 
 def get_embedding(documents, key=None, model="text-embedding-ada-002"):
-    """Default embedding function that uses OpenAI Embeddings."""
+    """Default embedding function that uses SentenceTransformer "all-MiniLM-L6-v2" Embeddings."""
     if isinstance(documents, list):
         if isinstance(documents[0], dict):
             texts = []
