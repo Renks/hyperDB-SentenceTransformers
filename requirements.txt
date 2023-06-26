@@ -1,3 +1,4 @@
 numpy
 pytest
-sentence-transformers
+# fast-sentence-transformers # Uncomment in case you want CPU version
+fast-sentence-transformers[gpu]
