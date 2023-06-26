@@ -16,10 +16,12 @@ Join the [HyperDBiscord](https://discord.gg/8YQzexAA)
 
 ## Installation
 
-Install the package from PyPI:
+Clone the repo and install using pip:
 
 ```bash
-pip install hyperdb-python
+git clone https://github.com/Renks/hyperDB-SentenceTransformers.git
+cd hyperDB-SentenceTransformers
+pip install .
 ```
 
 ## Usage
