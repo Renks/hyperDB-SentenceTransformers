@@ -16,7 +16,7 @@ from hyperdb.galaxy_brain_math_shit import (
 EMBEDDING_MODEL = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", device="gpu")
 
 
-def get_embedding(documents, key=None, model="text-embedding-ada-002"):
+def get_embedding(documents, key=None, model=EMBEDDING_MODEL):
     """Default embedding function that uses SentenceTransformer "all-MiniLM-L6-v2" Embeddings."""
     if isinstance(documents, list):
         if isinstance(documents[0], dict):
@@ -37,7 +37,7 @@ def get_embedding(documents, key=None, model="text-embedding-ada-002"):
         elif isinstance(documents[0], str):
             texts = documents
 
-    embeddings = EMBEDDING_MODEL.encode(texts)
+    embeddings = model.encode(texts)
     return embeddings
 
 
@@ -52,7 +52,7 @@ class HyperDB:
     ):
         documents = documents or []
         self.documents = []
-        self.vectors = None # update from "[]" to "None"
+        self.vectors = vectors or None # update from "[]" to "None"
         self.embedding_function = embedding_function or (
             lambda docs: get_embedding(docs, key=key)
         )
